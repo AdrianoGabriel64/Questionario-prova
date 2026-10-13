@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Questionário — Programação e Pesquisa</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--b:#0b5fd7;--b2:#e8f1ff;--ink:#111827;--mu:#5b6575;--ln:#cfd8e6;--ok:#12803f;--okb:#e6f6ec;--no:#c42b1c;--nob:#fdeceb;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#fff;color:var(--ink);font:16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:700px;margin:0 auto;padding:14px 16px 40px}
+header{display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--b);padding-bottom:8px;font-size:14px;color:var(--mu);gap:8px;flex-wrap:wrap}
+header b{color:var(--b);font-size:15px}
+.dots{display:flex;gap:6px;margin:12px 0}
+.dots button{flex:1;height:10px;border:0;border-radius:5px;background:var(--ln);cursor:pointer;padding:0}
+.dots .cur{outline:2px solid var(--b);outline-offset:2px}.dots .ans{background:var(--b)}.opt.sel{border-color:var(--b);background:var(--b2)}
+h2{font-size:18px;line-height:1.45;margin:14px 0 10px;font-weight:600}
+.pq{font-weight:700;margin:16px 0 8px}
+.fig{border:1px solid var(--ln);border-radius:6px;padding:12px;margin:10px 0}
+.fig small{display:block;color:var(--mu);font-size:13px;margin-bottom:8px}
+.t{cursor:pointer;border:1.5px solid var(--b);background:#fff;color:var(--ink);border-radius:6px;padding:8px;font:inherit;font-size:14px;text-align:center;transition:background .12s}
+.t:hover,.t.on{background:var(--b2)}.t.on{box-shadow:inset 0 0 0 1px var(--b)}
+.t:focus-visible,.opt:focus-visible,.btn:focus-visible{outline:3px solid #7fb0ff;outline-offset:2px}
+.tip{min-height:44px;margin-top:10px;padding:8px 10px;background:var(--b2);border-left:4px solid var(--b);font-size:14px;border-radius:0 6px 6px 0}
+.row{display:flex;gap:8px;align-items:stretch}.row>.t{flex:1}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.flow i{font-style:normal;color:var(--b);font-weight:700}
+.flow .t b{display:block;font-size:12px;color:var(--b)}
+.d{border-radius:20px;border-style:dashed}
+.expr{font:15px/2.2 ui-monospace,Consolas,monospace}
+.expr .t{padding:2px 6px;display:inline-block;font:inherit;line-height:1.6}
+table{width:100%;border-collapse:collapse}td{padding:4px}
+td.k{width:30%}
+.opt{display:flex;gap:10px;width:100%;text-align:left;font:inherit;background:#fff;color:var(--ink);border:1.5px solid var(--ln);border-radius:8px;padding:11px;margin:8px 0;cursor:pointer;transition:border-color .12s,transform .08s}
+.opt:hover:not(:disabled){border-color:var(--b);background:var(--b2)}.opt:active:not(:disabled){transform:scale(.99)}
+.opt b{color:var(--b);flex:none}
+.opt.ok{border-color:var(--ok);background:var(--okb)}.opt.no{border-color:var(--no);background:var(--nob);animation:sh .3s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+@media(prefers-reduced-motion:reduce){.opt.no{animation:none}}
+.fb{margin-top:10px;padding:10px 12px;border-radius:6px;background:#f5f8fd;border:1px solid var(--ln);font-size:15px}
+.btn{font:600 15px system-ui,sans-serif;background:var(--b);color:#fff;border:0;border-radius:6px;padding:11px 18px;margin:14px 8px 0 0;cursor:pointer}
+.btn.alt{background:#fff;color:var(--b);border:1.5px solid var(--b)}
+.btn:disabled{opacity:.4;cursor:default}
+kbd{font:12px ui-monospace,monospace;border:1px solid var(--ln);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--mu)}
+.big{font-size:44px;font-weight:700;color:var(--b);margin:0}
+.rv{border-top:1px solid var(--ln);padding:8px 0;font-size:15px}
+h2,.pq,.btn,.big,header b,.t b{font-family:Poppins,Inter,system-ui,sans-serif}
+.expr{font-family:"JetBrains Mono",ui-monospace,Consolas,monospace}
+.sm{padding:6px 10px;font-size:13px;margin:0 6px 8px 0}.tb{margin:2px 0 8px}
+.ex{float:right;color:var(--b);font-weight:600}
+.kc{flex:none;width:30px;height:30px;border:1.5px solid var(--b);border-bottom-width:4px;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--b);transition:.12s}
+.opt:hover:not(:disabled) .kc{background:var(--b);color:#fff;transform:translateY(2px)}
+.opt.gone{opacity:.28;text-decoration:line-through;pointer-events:none}
+.t{transition:transform .12s,background .12s,box-shadow .12s}.t:hover{transform:translateY(-2px);box-shadow:0 3px 0 var(--b)}
+.t.seen::after{content:" ✓";color:var(--b);font-weight:700}
+.t.pop{animation:pop .3s}@keyframes pop{50%{transform:scale(1.1)}}
+.tip{transition:background .2s}.tip.flash{background:#cfe2ff}
+.cf{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:9}
+@media(prefers-reduced-motion:reduce){.t.pop{animation:none}.t:hover{transform:none}}
+</style></head><body><main>
+<header><b>UniBRAS · Prova</b><span id="hs"></span></header>
+<div class="dots" id="dots"></div>
+<div id="app"></div>
+</main>
+<script>
+const T=(tip,html,c)=>`<button class="t ${c||''}" data-tip="${tip}">${html}</button>`;
+const svg=(p)=>`<svg viewBox="0 0 60 80" width="60" height="80" fill="none" stroke="#0b5fd7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const FLOW=(a)=>`<div class="flow">`+a.map((n,k)=>(k?'<i>→</i>':'')+T(n[1],(n[2]?`<b>${n[2]}</b>`:'')+n[0],n[3])).join('')+`</div>`;
+const FIG={
+1:()=>`<div class="row">`+
+ T('Sequência: as instruções rodam uma após a outra, de cima para baixo.',svg('<path d="M30 2v10"/><circle cx="30" cy="22" r="8"/><path d="M30 30v8"/><circle cx="30" cy="46" r="8"/><path d="M30 54v8"/><circle cx="30" cy="70" r="6"/>')+'<br><b>Sequência</b>')+
+ T('Decisão (IF/ELSE): o código escolhe um caminho diferente conforme uma condição ser verdadeira ou falsa.',svg('<path d="M30 2v8"/><path d="M30 10l20 16-20 16-20-16z"/><path d="M10 26H4v28h52V26h-6"/><path d="M30 54v20"/>')+'<br><b>Decisão (IF/ELSE)</b>')+
+ T('Repetição (WHILE/FOR): um bloco de código se repete até que uma condição seja satisfeita.',svg('<path d="M30 2v22"/><circle cx="30" cy="38" r="10"/><path d="M30 48v28"/><path d="M52 38A22 22 0 1 0 30 60"/><path d="M26 56l4 4-4 4"/>')+'<br><b>Repetição (WHILE/FOR)</b>')+`</div>`,
+2:()=>FLOW([['Idade = 17','Entrada: os dados brutos que você fornece.','ENTRADA'],['Verificar se Idade >= 18','Processamento: a lógica e as operações matemáticas.','PROCESSAMENTO'],['Imprimir: "Menor de idade"','Saída: o resultado final gerado.','SAÍDA']]),
+3:()=>`<div class="expr">Pesquisar: `+T('Os parênteses agrupam a lógica, igual na matemática.','(')+T('Aspas: buscam a expressão exata.','"Inteligência Artificial"')+' '+T('OR garante que você não perca artigos que usam o sinônimo em inglês.','OR')+' '+T('Aspas: buscam a expressão exata.','"Machine Learning"')+T('Fecha o grupo.',')')+'<br>'+T('AND obriga o artigo a ser aplicado exclusivamente ao tema Educação.','AND')+' "Educação" '+T('NOT filtra e joga fora os artigos de engenharia de hardware que não interessam.','NOT')+' "Robótica"</div>',
+4:()=>`<div class="row">`+T('DeCS: vocabulário controlado para buscas em Português.','<b style="font-size:22px">DeCS</b><br>para buscas em Português')+T('MeSH: vocabulário controlado para buscas em Inglês.','<b style="font-size:22px">MeSH</b><br>para buscas em Inglês')+`</div>`,
+5:()=>FLOW([['1. Resumo (Abstract)','Comece por aqui: é o primeiro filtro.'],['É pra mim?','Decisão: o artigo serve ao seu trabalho?','','d'],['NÃO: aborte','Se não for pra você, abandone o artigo.'],['2. Conclusão','Se SIM, vá à conclusão.'],['O que descobriram? Vale o seu tempo?','Decisão: a descoberta compensa continuar lendo?','','d'],['3. Introdução','Entenda qual era o problema original e por que fizeram essa pesquisa.'],['4. Metodologia e Resultados','Leia apenas se precisar replicar o estudo ou auditar a lógica usada.']]),
+6:()=>`<table>`+[['O Ponto de Partida','Google Acadêmico','Vasto, global, gratuito. Excelente para uma visão geral do tema.'],['O Foco Regional (BR/Latam)','SciELO & BDTD','Acesso aberto, alto padrão. BDTD é exclusivo para teses e dissertações brasileiras.'],['Os Pesos-Pesados (Elite)','Scopus & Web of Science','Maior impacto mundial. Use o Portal de Periódicos CAPES (login da universidade) para desbloquear acesso VIP.'],['O Foco Específico','PubMed & JSTOR','PubMed para Saúde/Biomedicina. JSTOR para Ciências Humanas e Sociais.']].map(r=>`<tr><td class="k"><small>${r[0]}</small></td><td>${T(r[2],'<b>'+r[1]+'</b>')}</td></tr>`).join('')+`</table>`
+};
+const Q=[
+{n:1,t:"Um estudante precisa desenvolver um programa que receba a idade de uma pessoa e informe se ela é maior ou menor de idade. Para isso, o programa deverá receber a idade, verificar uma condição e apresentar a mensagem correspondente.",p:"Considerando os fundamentos de programação estruturada apresentados, a estrutura mais adequada para implementar essa situação é:",c:"Os 3 pilares da Programação Estruturada",
+o:["Uma estrutura de repetição, pois a idade deverá ser processada continuamente até que o usuário encerre o programa.","Uma estrutura de decisão, utilizando uma condição que permita escolher entre dois resultados possíveis.","Uma estrutura exclusivamente sequencial, pois qualquer programa deve executar todas as instruções independentemente dos valores recebidos.","Uma estrutura de repetição do tipo FOR, pois toda entrada de dados precisa ser processada por um número determinado de vezes.","Uma estrutura baseada exclusivamente em operadores matemáticos, sem necessidade de utilizar condições lógicas."],a:1,
+e:"São dois resultados possíveis (maior ou menor), escolhidos por uma condição: decisão (IF/ELSE)."},
+{n:2,t:"Em uma pesquisa acadêmica, um estudante deseja desenvolver um pequeno programa para calcular a média de três notas. O programa deverá receber as notas digitadas pelo usuário, realizar o cálculo da média e apresentar o resultado.",p:"Considerando o modelo IPO (Input → Processing → Output), a sequência correta das etapas é:",c:"O fluxo universal de qualquer programa",
+o:["Processamento → Entrada → Saída.","Saída → Entrada → Processamento.","Entrada → Saída → Processamento.","Entrada → Processamento → Saída.","Saída → Processamento → Entrada"],a:3,
+e:"Os dados entram (notas), são processados (média) e só depois o resultado é mostrado."},
+{n:3,t:"Uma estudante deseja realizar uma pesquisa bibliográfica sobre a utilização de Inteligência Artificial na educação. Entretanto, ela também deseja considerar trabalhos que utilizem o termo Machine Learning, mas não pretende encontrar estudos relacionados à robótica.",p:"Para construir uma busca mais adequada, considerando os operadores booleanos apresentados na aula, a expressão mais apropriada é:",c:"Programando a sua pesquisa bibliográfica",
+o:['"Inteligência Artificial" AND "Machine Learning" AND "Educação" AND "Robótica"','"Inteligência Artificial" OR "Machine Learning" OR "Educação" OR "Robótica"','"Inteligência Artificial" AND "Machine Learning" AND "Educação" NOT "Robótica"','"Inteligência Artificial" NOT "Machine Learning" OR "Educação" AND "Robótica"','"Inteligência Artificial" NOT "Educação" AND "Machine Learning" OR "Robótica"'],a:2,
+e:'Obriga Educação e exclui Robótica com NOT. O ideal da aula seria ("IA" OR "Machine Learning") AND "Educação" NOT "Robótica"; entre as opções, a C é a mais próxima.'},
+{n:4,t:"Durante uma pesquisa em uma base de dados científica, um estudante utiliza o termo: Educ*. O objetivo é recuperar diferentes palavras que possuam a mesma raiz, aumentando a abrangência da pesquisa.",p:"Considerando o funcionamento do truncamento apresentado na aula, é correto afirmar que:",c:"Vocabulários controlados",
+o:["O asterisco determina que somente a palavra exatamente igual a “Educ” seja localizada.","O asterisco exclui automaticamente todos os termos relacionados à palavra pesquisada.","O truncamento permite recuperar diferentes variações que compartilham a raiz utilizada na pesquisa.","O truncamento deve ser utilizado exclusivamente para pesquisar autores de artigos científicos.","O asterisco substitui os operadores booleanos AND, OR e NOT nas bases científicas."],a:2,
+e:"Educ* traz educação, educacional, educador… O asterisco amplia a busca."},
+{n:5,t:"Um estudante universitário precisa analisar diversos artigos científicos para elaborar um trabalho acadêmico. Como possui pouco tempo disponível, ele decide não realizar inicialmente uma leitura completa de todos os textos.",p:"De acordo com a estratégia apresentada na aula, qual procedimento é mais adequado?",c:"Estratégia de leitura de artigos",
+o:["Ler integralmente todos os artigos, começando pela metodologia, independentemente da relevância do trabalho.","Ler inicialmente o resumo para realizar um filtro, verificar a conclusão e posteriormente consultar a introdução e a metodologia conforme a necessidade.","Começar exclusivamente pela metodologia, pois ela apresenta todas as informações necessárias para determinar a relevância do artigo.","Ler somente o título dos artigos e utilizar essa informação como suficiente para elaborar a revisão bibliográfica.","Iniciar diretamente pelos resultados, ignorando o resumo, a introdução e a conclusão."],a:1,
+e:"Fluxo da aula: Resumo (filtro) → Conclusão → Introdução → Metodologia, só se precisar."},
+{n:6,t:"Um aluno precisa realizar uma pesquisa científica sobre determinado tema. Inicialmente, pretende obter uma visão geral do assunto e, posteriormente, localizar trabalhos acadêmicos brasileiros, artigos de maior impacto internacional e estudos específicos da área da saúde.",p:"Considerando os repositórios apresentados na aula, a estratégia mais adequada seria:",c:"Repositórios científicos",
+o:["Utilizar exclusivamente o Google Acadêmico, pois ele substitui todas as demais bases científicas.","Utilizar SciELO para artigos internacionais de maior impacto, BDTD para artigos biomédicos e PubMed para teses brasileiras.","Utilizar Google Acadêmico para uma visão inicial, SciELO/BDTD para produção brasileira e latino-americana, Scopus/Web of Science para literatura internacional e PubMed para saúde e biomedicina.","Utilizar exclusivamente ResearchGate e Academia.edu, pois todas as publicações científicas estão disponíveis gratuitamente nessas plataformas.","Utilizar somente o Portal de Periódicos CAPES, independentemente do assunto ou do objetivo da pesquisa."],a:2,
+e:"Segue a tabela: ponto de partida (Google Acadêmico), regional (SciELO/BDTD), elite (Scopus/WoS), específico (PubMed)."}
+];
+const L="ABCDE",$=id=>document.getElementById(id);
+let i=0,ans=[],t0=Date.now(),tm;
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const fmt=s=>Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+function head(){const r=ans.filter((a,j)=>a===Q[j].a).length,d=ans.filter(a=>a!=null).length;
+ $("hs").textContent=`Respondidas ${d}/${Q.length} · ${fmt(Math.floor((Date.now()-t0)/1000))}`}
+function dots(){$("dots").innerHTML=Q.map((q,j)=>`<button aria-label="Ir para a questão ${j+1}" class="${j===i?'cur ':''}${ans[j]==null?'':'ans'}" data-j="${j}"></button>`).join("");
+ document.querySelectorAll(".dots button").forEach(b=>b.onclick=()=>{i=+b.dataset.j;show()})}
+function show(){const q=Q[i];dots();head();
+ $("app").innerHTML=`<h2>${q.n}. ${esc(q.t)}</h2><div class="fig"><small>${q.c}<span id="ex" class="ex"></span></small><div class="tb"></div>${FIG[q.n]()}<div class="tip" id="tip">Toque em uma parte do diagrama para ver o que ela significa.</div></div><p class="pq">${esc(q.p)}</p><div>${q.o.map((t,k)=>`<button class="opt" data-k="${k}"><b class="kc">${L[k]}</b><span>${esc(t)}</span></button>`).join("")}</div><div id="fb"></div><div><button class="btn alt" id="pv" ${i?'':'disabled'}>Anterior</button><button class="btn" id="nx">${i<Q.length-1?'Próxima':'Finalizar'}</button></div><p style="color:var(--mu);font-size:13px;margin-top:14px">Atalhos: <kbd>A</kbd>–<kbd>E</kbd> responde · <kbd>←</kbd> <kbd>→</kbd> navega</p>`;
+ document.querySelectorAll(".t").forEach(b=>b.onclick=()=>{sel(b);pauseAnim()});
+ document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+ $("pv").onclick=()=>{i--;show()};$("nx").onclick=nxt;upd(true);play();
+ if(ans[i]!=null)mark()}
+let st=0,pt=0;
+function upd(r){const a=[...document.querySelectorAll(".t")],s=a.filter(x=>x.classList.contains("seen")).length;$("ex").textContent=`Explorado ${s}/${a.length}${s==a.length?" ✓ completo":""}`}
+function sel(b,au){document.querySelectorAll(".t.on").forEach(x=>x.classList.remove("on"));b.classList.add("on","pop");if(!au)b.classList.add("seen");setTimeout(()=>b.classList.remove("pop"),300);const t=$("tip");t.textContent=b.dataset.tip;t.classList.add("flash");setTimeout(()=>t.classList.remove("flash"),250);upd()}
+let rt;
+function play(){clearTimeout(rt);const a=[...document.querySelectorAll(".fig .t")],id=++pt;const step=k=>{if(id!==pt)return;if(k>=a.length){rt=setTimeout(()=>step(0),2000);return}sel(a[k],true);rt=setTimeout(()=>step(k+1),1500)};rt=setTimeout(()=>step(0),600)}
+function stopAnim(){pt++;clearTimeout(rt)}
+function pauseAnim(){stopAnim();rt=setTimeout(play,6000)}
+function hint(){if(ans[i]!=null)return;const q=Q[i],w=[...document.querySelectorAll(".opt:not(.gone)")].filter((b,j)=>+b.dataset.k!==q.a);w.sort(()=>Math.random()-.5).slice(0,Math.max(0,w.length-2)).forEach(b=>b.classList.add("gone"));$("hn").disabled=true}
+function boom(el){if(matchMedia("(prefers-reduced-motion:reduce)").matches)return;const r=el.getBoundingClientRect(),x=r.left+30,y=r.top+15,c=["#0b5fd7","#4c9aff","#8ec1ff","#12803f"];for(let n=0;n<26;n++){const s=document.createElement("span");s.className="cf";s.style.cssText=`left:${x}px;top:${y}px;background:${c[n%4]}`;document.body.appendChild(s);const a=Math.random()*6.28,d=60+Math.random()*90;s.animate([{transform:"translate(0,0)",opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+40}px) rotate(${Math.random()*360}deg)`,opacity:0}],{duration:700+Math.random()*300,easing:"ease-out"}).onfinish=()=>s.remove()}}
+function pick(k){ans[i]=k;mark();dots();head()}
+function mark(){document.querySelectorAll(".opt").forEach((b,j)=>b.classList.toggle("sel",j===ans[i]))}
+function nxt(){if(i<Q.length-1){i++;show();scrollTo(0,0)}else end()}
+let ac;
+function tone(f,t,d,ty,v){const c=ac,o=c.createOscillator(),g=c.createGain(),s=c.currentTime+t;o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(.0001,s);g.gain.exponentialRampToValueAtTime(v,s+.02);g.gain.exponentialRampToValueAtTime(.0001,s+d);o.connect(g);g.connect(c.destination);o.start(s);o.stop(s+d+.05)}
+function sfx(good){try{if(good){[523,659,784,1047].forEach((f,k)=>tone(f,k*.13,.4,"triangle",.28));[523,659,784].forEach(f=>tone(f,.6,.9,"sine",.15))}else{[392,349,311,233].forEach((f,k)=>tone(f,k*.28,.5,"sawtooth",.1))}}catch(e){}}
+function end(){stopAnim();clearInterval(tm);try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();ac.resume()}catch(e){}
+ const r=ans.filter((a,j)=>a===Q[j].a).length,s=Math.floor((Date.now()-t0)/1000),need=Math.ceil(Q.length*.6),pass=r>=need;
+ $("hs").textContent="Resultado";
+ $("app").innerHTML=`<div style="text-align:center;padding:24px 0"><p style="margin:0;color:var(--mu)">Você pontuou</p><p class="big" id="sc" style="font-size:72px">0</p><p style="margin:0;font-size:20px;color:var(--mu)">de ${Q.length} questões</p><p id="vd" style="font:700 26px Poppins,sans-serif;margin:18px 0 4px;min-height:40px"></p><p style="color:var(--mu);font-size:14px">Tempo: ${fmt(s)} · Aprovação a partir de ${need} acertos</p><button class="btn" id="a1">Refazer</button><button class="btn alt" id="a3">Embaralhar e refazer</button></div>`;
+ $("a1").onclick=()=>start();
+ $("a3").onclick=()=>{for(let a=Q.length-1;a>0;a--){const b=Math.random()*(a+1)|0;[Q[a],Q[b]]=[Q[b],Q[a]]}start()};
+ let n=0;const iv=setInterval(()=>{if(n<r){n++;$("sc").textContent=n;try{tone(440+n*80,0,.12,"square",.06)}catch(e){}}if(n>=r){clearInterval(iv);setTimeout(()=>{const v=$("vd"),sc=$("sc");if(!v)return;v.textContent=pass?"Aprovado!":"Reprovado";v.style.color=pass?"var(--ok)":"var(--no)";sc.style.color=pass?"var(--ok)":"var(--no)";sfx(pass);if(pass)[0,300,650].forEach(t=>setTimeout(()=>boom(sc),t));else sc.style.animation="sh .5s"},350)}},r?380:0)}
+function start(){i=0;ans=[];st=0;t0=Date.now();clearInterval(tm);tm=setInterval(head,1000);show();scrollTo(0,0)}
+document.addEventListener("keydown",e=>{const k=e.key.toLowerCase();if(!$("nx"))return;
+ if("abcde".includes(k)&&k.length==1&&"abcde".indexOf(k)<Q[i].o.length)pick("abcde".indexOf(k));
+ else if(e.key==="ArrowRight"||e.key==="Enter"){if(ans[i]!=null)nxt()}
+ else if(e.key==="ArrowLeft"&&i){i--;show()}});
+start();
+</script></body></html>
